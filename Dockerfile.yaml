@@ -1,0 +1,17 @@
+FROM golang:1.17.7-alpine as build
+
+WORKDIR /src
+
+RUN go mod init desafio
+
+COPY *.go ./
+
+RUN go build -o /main
+
+FROM scratch as execute
+
+WORKDIR /
+
+COPY --from=build /main /
+
+ENTRYPOINT [ "/main" ]
